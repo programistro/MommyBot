@@ -56,6 +56,12 @@
               "target": "Package",
               "version": "[9.0.2, )"
             },
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.2, )"
+            },
             "Microsoft.EntityFrameworkCore.Sqlite": {
               "target": "Package",
               "version": "[9.0.2, )"
@@ -66,9 +72,13 @@
               "target": "Package",
               "version": "[9.0.2, )"
             },
-            "Telegram.Bot": {
+            "Npgsql.EntityFrameworkCore.PostgreSQL": {
               "target": "Package",
-              "version": "[22.4.3, )"
+              "version": "[9.0.3, )"
+            },
+            "WTelegramBot": {
+              "target": "Package",
+              "version": "[8.3.1, )"
             }
           },
           "imports": [

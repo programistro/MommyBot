@@ -759,6 +759,40 @@
           "buildTransitive/Mono.TextTemplating.targets": {}
         }
       },
+      "Npgsql/9.0.2": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "8.0.2"
+        },
+        "compile": {
+          "lib/net8.0/Npgsql.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Npgsql.dll": {
+            "related": ".xml"
+          }
+        }
+      },
+      "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.3": {
+        "type": "package",
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "[9.0.1, 10.0.0)",
+          "Microsoft.EntityFrameworkCore.Relational": "[9.0.1, 10.0.0)",
+          "Npgsql": "9.0.2"
+        },
+        "compile": {
+          "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
+            "related": ".xml"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
         "type": "package",
         "dependencies": {
@@ -1128,25 +1162,39 @@
           "buildTransitive/net6.0/_._": {}
         }
       },
-      "Telegram.Bot/22.4.3": {
+      "WTelegramBot/8.3.1": {
         "type": "package",
         "dependencies": {
           "Microsoft.Extensions.Options.ConfigurationExtensions": "8.0.0",
-          "System.Text.Json": "8.0.5"
+          "System.Text.Json": "8.0.5",
+          "WTelegramClient": "4.2.9-dev.4"
         },
         "compile": {
-          "lib/net6.0/Telegram.Bot.dll": {
-            "related": ".pdb;.xml"
+          "lib/net8.0/WTelegramBot.dll": {
+            "related": ".xml"
           }
         },
         "runtime": {
-          "lib/net6.0/Telegram.Bot.dll": {
-            "related": ".pdb;.xml"
+          "lib/net8.0/WTelegramBot.dll": {
+            "related": ".xml"
           }
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
         ]
+      },
+      "WTelegramClient/4.2.9-dev.4": {
+        "type": "package",
+        "compile": {
+          "lib/net8.0/WTelegramClient.dll": {
+            "related": ".xml"
+          }
+        },
+        "runtime": {
+          "lib/net8.0/WTelegramClient.dll": {
+            "related": ".xml"
+          }
+        }
       }
     }
   },
@@ -2734,6 +2782,38 @@
         "readme.md"
       ]
     },
+    "Npgsql/9.0.2": {
+      "sha512": "hCbO8box7i/XXiTFqCJ3GoowyLqx3JXxyrbOJ6om7dr+eAknvBNhhUHeJVGAQo44sySZTfdVffp4BrtPeLZOAA==",
+      "type": "package",
+      "path": "npgsql/9.0.2",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net6.0/Npgsql.dll",
+        "lib/net6.0/Npgsql.xml",
+        "lib/net8.0/Npgsql.dll",
+        "lib/net8.0/Npgsql.xml",
+        "npgsql.9.0.2.nupkg.sha512",
+        "npgsql.nuspec",
+        "postgresql.png"
+      ]
+    },
+    "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.3": {
+      "sha512": "1A6HpMPbzK+quxdtug1aDHI4BSRTgpi7OaDt8WQh7SFJd2sSQ0nNTZ7sYrwyxVf4AdKdN7XJL9tpiiJjRUaa4g==",
+      "type": "package",
+      "path": "npgsql.entityframeworkcore.postgresql/9.0.3",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "README.md",
+        "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll",
+        "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.xml",
+        "npgsql.entityframeworkcore.postgresql.9.0.3.nupkg.sha512",
+        "npgsql.entityframeworkcore.postgresql.nuspec",
+        "postgresql.png"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
       "sha512": "UxWuisvZ3uVcVOLJQv7urM/JiQH+v3TmaJc1BLKl5Dxfm/nTzTUrqswCqg/INiYLi61AXnHo1M1JPmPqqLnAdg==",
       "type": "package",
@@ -3235,32 +3315,54 @@
         "useSharedDesignerContext.txt"
       ]
     },
-    "Telegram.Bot/22.4.3": {
-      "sha512": "WiIS43Hh3Uk+74Oenhe5kaU+Td2hgiYYUo3Mo+ieqCaNrLJCELwgMBOcYGgRt4BZ0V2Mhy9LoJ5gTzc6BryqGg==",
+    "WTelegramBot/8.3.1": {
+      "sha512": "jkHzOfpngMwI2r3xay0is11sYsJei3gst14LEx5qcNF1ND926mvtgmzS4pRRznFF6C8O2Kwadai+j6ovZxvjag==",
       "type": "package",
-      "path": "telegram.bot/22.4.3",
+      "path": "wtelegrambot/8.3.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "CHANGES.md",
+        "README.md",
+        "lib/net6.0/WTelegramBot.dll",
+        "lib/net6.0/WTelegramBot.xml",
+        "lib/net8.0/WTelegramBot.dll",
+        "lib/net8.0/WTelegramBot.xml",
+        "lib/netstandard2.0/WTelegramBot.dll",
+        "lib/netstandard2.0/WTelegramBot.xml",
+        "logo.png",
+        "wtelegrambot.8.3.1.nupkg.sha512",
+        "wtelegrambot.nuspec"
+      ]
+    },
+    "WTelegramClient/4.2.9-dev.4": {
+      "sha512": "FM9xScHekYVPDSfCXa+Z/hsyRX8L89Tvfl4VdIWVU5MATCG+hTitJF7QLjhLWooWc34YN7bqA6GnLgDSGu9Gvg==",
+      "type": "package",
+      "path": "wtelegramclient/4.2.9-dev.4",
       "files": [
         ".nupkg.metadata",
         ".signature.p7s",
         "README.md",
-        "lib/net6.0/Telegram.Bot.dll",
-        "lib/net6.0/Telegram.Bot.pdb",
-        "lib/net6.0/Telegram.Bot.xml",
-        "lib/netstandard2.0/Telegram.Bot.dll",
-        "lib/netstandard2.0/Telegram.Bot.pdb",
-        "lib/netstandard2.0/Telegram.Bot.xml",
-        "package-icon.png",
-        "telegram.bot.22.4.3.nupkg.sha512",
-        "telegram.bot.nuspec"
+        "lib/net5.0/WTelegramClient.dll",
+        "lib/net5.0/WTelegramClient.xml",
+        "lib/net8.0/WTelegramClient.dll",
+        "lib/net8.0/WTelegramClient.xml",
+        "lib/netstandard2.0/WTelegramClient.dll",
+        "lib/netstandard2.0/WTelegramClient.xml",
+        "logo.png",
+        "wtelegramclient.4.2.9-dev.4.nupkg.sha512",
+        "wtelegramclient.nuspec"
       ]
     }
   },
   "projectFileDependencyGroups": {
     "net9.0": [
       "Microsoft.EntityFrameworkCore >= 9.0.2",
+      "Microsoft.EntityFrameworkCore.Design >= 9.0.2",
       "Microsoft.EntityFrameworkCore.Sqlite >= 9.0.2",
       "Microsoft.EntityFrameworkCore.Tools >= 9.0.2",
-      "Telegram.Bot >= 22.4.3"
+      "Npgsql.EntityFrameworkCore.PostgreSQL >= 9.0.3",
+      "WTelegramBot >= 8.3.1"
     ]
   },
   "packageFolders": {
@@ -3319,6 +3421,12 @@
             "target": "Package",
             "version": "[9.0.2, )"
           },
+          "Microsoft.EntityFrameworkCore.Design": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[9.0.2, )"
+          },
           "Microsoft.EntityFrameworkCore.Sqlite": {
             "target": "Package",
             "version": "[9.0.2, )"
@@ -3329,9 +3437,13 @@
             "target": "Package",
             "version": "[9.0.2, )"
           },
-          "Telegram.Bot": {
+          "Npgsql.EntityFrameworkCore.PostgreSQL": {
             "target": "Package",
-            "version": "[22.4.3, )"
+            "version": "[9.0.3, )"
+          },
+          "WTelegramBot": {
+            "target": "Package",
+            "version": "[8.3.1, )"
           }
         },
         "imports": [

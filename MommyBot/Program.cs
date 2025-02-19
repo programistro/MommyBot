@@ -1,47 +1,23 @@
-﻿using Telegram.Bot;
+﻿using System.Threading.Channels;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using MommyBot.Data;
+using MommyBot.Service;
+using Telegram.Bot;
 using Telegram.Bot.Exceptions;
 using Telegram.Bot.Polling;
 using Telegram.Bot.Types;
 using Telegram.Bot.Types.Enums;
 using Telegram.Bot.Types.ReplyMarkups;
+using WTelegram;
+using User = WTelegram.Types.User;
+using TL;
 
 namespace MommyBot;
 
 class Program
-{
-    // static void Main(string[] args)
-    // {
-    //     var client = new TelegramBotClient("7625037901:AAHR5iEPO8_lNOqOAIiVKAZgjMJxyQA361s");
-    //     Console.WriteLine("Done");
-    //     client.StartReceiving(Start, Error);
-    //     Console.ReadLine();
-    // }
-    //
-    // private static async Task Start(ITelegramBotClient botClient, Update update, CancellationToken token)
-    // {
-    //     var message = update.Message;
-    //
-    //     if (!string.IsNullOrEmpty(message?.Text))
-    //     {
-    //         Console.WriteLine($@"{message.Chat.FirstName}  |  {message.Text}");
-    //
-    //         if (message.Text.StartsWith("/start"))
-    //         {
-    //             await botClient.SendTextMessageAsync(message.Chat.Id, "Введите свои данные для входа:(фио, возраст и город прожвиания)");
-    //         }
-    //     }
-    // }
-    //
-    // private static async Task Error(ITelegramBotClient client, Exception exception, CancellationToken token)
-    // {
-    //     Console.WriteLine(exception.InnerException?.Message);
-    //     Console.WriteLine(exception.Message);
-    //     Console.WriteLine(exception.Source);
-    // }
-    
-    private static ITelegramBotClient bot;
-    private static Dictionary<long, SurveyState> _surveyStates = new();
-    
+{   
     public class SurveyState
     {
         public string Name { get; set; }
@@ -59,38 +35,74 @@ class Program
         }
     }
 
+    private static ITelegramBotClient bot;
+    private static DatabaseService _databaseService;
+    private static ModerationService _modService;
+    private static Dictionary<long, SurveyState> _surveyStates = new();
+    private static string _groupId = "-2266535283"; // ID вашей группы
+    
     static async Task Main(string[] args)
     {
-        bot = new TelegramBotClient("7625037901:AAHR5iEPO8_lNOqOAIiVKAZgjMJxyQA361s");
+        HostApplicationBuilder builder = Host.CreateApplicationBuilder(args);
         
+        var options = new DbContextOptionsBuilder<SurveyContext>()
+            .UseNpgsql("host=89.110.95.169;port=5432;Username=admin;Password=Abc#1234;Database=postgres")
+            .Options;
+        
+        // builder.Services.AddDbContextFactory<SurveyContext>(options => options.UseSqlite("Data Source=surveys.db"));
+    
+        bot = new TelegramBotClient("7625037901:AAHR5iEPO8_lNOqOAIiVKAZgjMJxyQA361s");
+    
         var receiverOptions = new ReceiverOptions
         {
-            AllowedUpdates = { } // получаем все обновления
+            AllowedUpdates = { } 
         };
-
+        
+        _databaseService = new DatabaseService(options);
+        _modService = new ModerationService(_databaseService, bot);
+    
         bot.StartReceiving(
             updateHandler: HandleUpdateAsync,
             errorHandler: HandlePollingErrorAsync,
             receiverOptions: receiverOptions);
-
+    
         var me = await bot.GetMeAsync();
         Console.WriteLine($"Бот {me.Username} запущен!");
-        
-        Console.ReadLine();
+
+        await Task.Delay(-1);
+        // Console.ReadLine();
         // await bot.StopReceiving();
     }
-
-    private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+    
+    private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
     {
         if (update.Type != UpdateType.Message)
             return;
-
+    
         if (update.Message!.Type != MessageType.Text)
             return;
-
+    
         var chatId = update.Message.Chat.Id;
         var messageText = update.Message.Text;
-
+        
+        if (messageText == "Одобрить")
+        {
+            await using var client = new WTelegram.Client(Config);
+            var user = await client.LoginUserIfNeeded();
+            Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
+            
+            var inputPeer = new InputChannel(2420062922, 0);
+            
+            var chats = await client.Messages_GetAllChats();
+            var chat = chats.chats[2420062922]; 
+            
+            var userChat = new InputUser(6986786921, 0); 
+            
+            await client.AddChatUser(chat, userChat);
+            
+            return;
+        }
+        
         // Проверяем команду /start
         if (messageText == "/start")
         {
@@ -98,7 +110,7 @@ class Program
                 chatId: chatId,
                 text: "Здравствуйте! Давайте заполним анкету.\nПожалуйста, введите ваше имя:",
                 cancellationToken: cancellationToken);
-
+    
             if (_surveyStates.ContainsKey(chatId))
             {
                 _surveyStates[chatId] = new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName };
@@ -107,10 +119,10 @@ class Program
             {
                 _surveyStates.Add(chatId, new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName });
             }
-
+    
             return;
         }
-
+    
         // Если нет активного опроса, начинаем новый
         if (!_surveyStates.ContainsKey(chatId))
         {
@@ -123,9 +135,9 @@ class Program
         
             return;
         }
-
+    
         var currentState = _surveyStates[chatId];
-
+    
         switch (currentState.CurrentStep)
         {
             case SurveyState.SurveyStep.WaitingForName:
@@ -141,8 +153,8 @@ class Program
                 break;
         }
     }
-
-    private static async Task HandleNameInput(ITelegramBotClient botClient, Message message, SurveyState state)
+    
+    private static async Task HandleNameInput(ITelegramBotClient botClient, Telegram.Bot.Types.Message message, SurveyState state)
     {
         if (!string.IsNullOrWhiteSpace(message.Text))
         {
@@ -155,8 +167,8 @@ class Program
                 cancellationToken: default);
         }
     }
-
-    private static async Task HandleAgeInput(ITelegramBotClient botClient, Message message, SurveyState state)
+    
+    private static async Task HandleAgeInput(ITelegramBotClient botClient, Telegram.Bot.Types.Message message, SurveyState state)
     {
         if (int.TryParse(message.Text, out int age))
         {
@@ -186,28 +198,41 @@ class Program
                 cancellationToken: default);
         }
     }
-
-    private static async Task HandleCityInput(ITelegramBotClient botClient, Message message, SurveyState state)
+    
+    private static async Task HandleCityInput(ITelegramBotClient botClient, Telegram.Bot.Types.Message message, SurveyState state)
     {
         if (!string.IsNullOrWhiteSpace(message.Text))
         {
             state.City = message.Text;
             state.CurrentStep = SurveyState.SurveyStep.Completed;
-
+    
             var surveyResult = $"Результат анкетирования:\n" +
                              $"Имя: {state.Name}\n" +
                              $"Возраст: {state.Age}\n" +
                              $"Город: {state.City}";
-
+    
             await botClient.SendTextMessageAsync(
                 chatId: message.Chat.Id,
                 text: surveyResult,
                 cancellationToken: default);
-
+    
             _surveyStates.Remove(message.Chat.Id);
+            
+            var surveyModel = new Survey
+            {
+                Id = Guid.NewGuid(),
+                Name = state.Name,
+                Age = state.Age,
+                City = state.City,
+                UserId = message.Chat.Id
+            };
+    
+            await _databaseService.SaveSurveyAsync(surveyModel);
+    
+            await _modService.SendToModeratorAsync(surveyModel.UserId, 1784802785);
         }
     }
-
+    
     private static Task HandlePollingErrorAsync(ITelegramBotClient botClient, Exception exception, CancellationToken cancellationToken)
     {
         var ErrorMessage = exception switch
@@ -218,5 +243,17 @@ class Program
         
         Console.WriteLine(ErrorMessage);
         return Task.CompletedTask;
+    }
+    
+    static string Config(string what)
+    {
+        switch (what)
+        {
+            case "api_id": return "25421922";
+            case "api_hash": return "8ed9b2cb68b4b22166105e81ddafb969";
+            case "phone_number": return "+79204489841";
+            case "verification_code": Console.Write("Code: "); return Console.ReadLine();
+            default: return null;                  // let WTelegramClient decide the default config
+        }
     }
 }

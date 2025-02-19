@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "IiWu7jXTfpU=",
+  "dgSpecHash": "L8R1emv8hCw=",
   "success": true,
   "projectFilePath": "C:\\Users\\katana\\RiderProjects\\MommyBot\\MommyBot\\MommyBot.csproj",
   "expectedPackageFiles": [
@@ -36,6 +36,8 @@
     "C:\\Users\\katana\\.nuget\\packages\\microsoft.extensions.options.configurationextensions\\8.0.0\\microsoft.extensions.options.configurationextensions.8.0.0.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\microsoft.extensions.primitives\\9.0.2\\microsoft.extensions.primitives.9.0.2.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\mono.texttemplating\\3.0.0\\mono.texttemplating.3.0.0.nupkg.sha512",
+    "C:\\Users\\katana\\.nuget\\packages\\npgsql\\9.0.2\\npgsql.9.0.2.nupkg.sha512",
+    "C:\\Users\\katana\\.nuget\\packages\\npgsql.entityframeworkcore.postgresql\\9.0.3\\npgsql.entityframeworkcore.postgresql.9.0.3.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.10\\sqlitepclraw.bundle_e_sqlite3.2.1.10.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\sqlitepclraw.core\\2.1.10\\sqlitepclraw.core.2.1.10.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.10\\sqlitepclraw.lib.e_sqlite3.2.1.10.nupkg.sha512",
@@ -54,7 +56,8 @@
     "C:\\Users\\katana\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\system.text.json\\9.0.2\\system.text.json.9.0.2.nupkg.sha512",
     "C:\\Users\\katana\\.nuget\\packages\\system.threading.channels\\7.0.0\\system.threading.channels.7.0.0.nupkg.sha512",
-    "C:\\Users\\katana\\.nuget\\packages\\telegram.bot\\22.4.3\\telegram.bot.22.4.3.nupkg.sha512"
+    "C:\\Users\\katana\\.nuget\\packages\\wtelegrambot\\8.3.1\\wtelegrambot.8.3.1.nupkg.sha512",
+    "C:\\Users\\katana\\.nuget\\packages\\wtelegramclient\\4.2.9-dev.4\\wtelegramclient.4.2.9-dev.4.nupkg.sha512"
   ],
   "logs": []
 }

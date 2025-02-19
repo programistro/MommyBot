@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("MommyBot")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c012278f0a4773b81e1680449a61c293796042c8")]
 [assembly: System.Reflection.AssemblyProductAttribute("MommyBot")]
 [assembly: System.Reflection.AssemblyTitleAttribute("MommyBot")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

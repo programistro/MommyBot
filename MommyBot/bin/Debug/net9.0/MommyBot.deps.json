@@ -9,9 +9,11 @@
       "MommyBot/1.0.0": {
         "dependencies": {
           "Microsoft.EntityFrameworkCore": "9.0.2",
+          "Microsoft.EntityFrameworkCore.Design": "9.0.2",
           "Microsoft.EntityFrameworkCore.Sqlite": "9.0.2",
           "Microsoft.EntityFrameworkCore.Tools": "9.0.2",
-          "Telegram.Bot": "22.4.3"
+          "Npgsql.EntityFrameworkCore.PostgreSQL": "9.0.3",
+          "WTelegramBot": "8.3.1"
         },
         "runtime": {
           "MommyBot.dll": {}
@@ -560,6 +562,30 @@
           }
         }
       },
+      "Npgsql/9.0.2": {
+        "dependencies": {
+          "Microsoft.Extensions.Logging.Abstractions": "9.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/Npgsql.dll": {
+            "assemblyVersion": "9.0.2.0",
+            "fileVersion": "9.0.2.0"
+          }
+        }
+      },
+      "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.3": {
+        "dependencies": {
+          "Microsoft.EntityFrameworkCore": "9.0.2",
+          "Microsoft.EntityFrameworkCore.Relational": "9.0.2",
+          "Npgsql": "9.0.2"
+        },
+        "runtime": {
+          "lib/net8.0/Npgsql.EntityFrameworkCore.PostgreSQL.dll": {
+            "assemblyVersion": "9.0.3.0",
+            "fileVersion": "9.0.3.0"
+          }
+        }
+      },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
         "dependencies": {
           "SQLitePCLRaw.lib.e_sqlite3": "2.1.10",
@@ -789,15 +815,24 @@
         }
       },
       "System.Threading.Channels/7.0.0": {},
-      "Telegram.Bot/22.4.3": {
+      "WTelegramBot/8.3.1": {
         "dependencies": {
           "Microsoft.Extensions.Options.ConfigurationExtensions": "8.0.0",
-          "System.Text.Json": "9.0.2"
+          "System.Text.Json": "9.0.2",
+          "WTelegramClient": "4.2.9-dev.4"
         },
         "runtime": {
-          "lib/net6.0/Telegram.Bot.dll": {
-            "assemblyVersion": "22.4.3.0",
-            "fileVersion": "22.4.3.0"
+          "lib/net8.0/WTelegramBot.dll": {
+            "assemblyVersion": "8.3.1.0",
+            "fileVersion": "8.3.1.0"
+          }
+        }
+      },
+      "WTelegramClient/4.2.9-dev.4": {
+        "runtime": {
+          "lib/net8.0/WTelegramClient.dll": {
+            "assemblyVersion": "4.2.9.0",
+            "fileVersion": "4.2.9.0"
           }
         }
       }
@@ -1033,6 +1068,20 @@
       "path": "mono.texttemplating/3.0.0",
       "hashPath": "mono.texttemplating.3.0.0.nupkg.sha512"
     },
+    "Npgsql/9.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-hCbO8box7i/XXiTFqCJ3GoowyLqx3JXxyrbOJ6om7dr+eAknvBNhhUHeJVGAQo44sySZTfdVffp4BrtPeLZOAA==",
+      "path": "npgsql/9.0.2",
+      "hashPath": "npgsql.9.0.2.nupkg.sha512"
+    },
+    "Npgsql.EntityFrameworkCore.PostgreSQL/9.0.3": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-1A6HpMPbzK+quxdtug1aDHI4BSRTgpi7OaDt8WQh7SFJd2sSQ0nNTZ7sYrwyxVf4AdKdN7XJL9tpiiJjRUaa4g==",
+      "path": "npgsql.entityframeworkcore.postgresql/9.0.3",
+      "hashPath": "npgsql.entityframeworkcore.postgresql.9.0.3.nupkg.sha512"
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.10": {
       "type": "package",
       "serviceable": true,
@@ -1159,12 +1208,19 @@
       "path": "system.threading.channels/7.0.0",
       "hashPath": "system.threading.channels.7.0.0.nupkg.sha512"
     },
-    "Telegram.Bot/22.4.3": {
+    "WTelegramBot/8.3.1": {
       "type": "package",
       "serviceable": true,
-      "sha512": "sha512-WiIS43Hh3Uk+74Oenhe5kaU+Td2hgiYYUo3Mo+ieqCaNrLJCELwgMBOcYGgRt4BZ0V2Mhy9LoJ5gTzc6BryqGg==",
-      "path": "telegram.bot/22.4.3",
-      "hashPath": "telegram.bot.22.4.3.nupkg.sha512"
+      "sha512": "sha512-jkHzOfpngMwI2r3xay0is11sYsJei3gst14LEx5qcNF1ND926mvtgmzS4pRRznFF6C8O2Kwadai+j6ovZxvjag==",
+      "path": "wtelegrambot/8.3.1",
+      "hashPath": "wtelegrambot.8.3.1.nupkg.sha512"
+    },
+    "WTelegramClient/4.2.9-dev.4": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-FM9xScHekYVPDSfCXa+Z/hsyRX8L89Tvfl4VdIWVU5MATCG+hTitJF7QLjhLWooWc34YN7bqA6GnLgDSGu9Gvg==",
+      "path": "wtelegramclient/4.2.9-dev.4",
+      "hashPath": "wtelegramclient.4.2.9-dev.4.nupkg.sha512"
     }
   }
 }
