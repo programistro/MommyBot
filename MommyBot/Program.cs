@@ -90,12 +90,14 @@ class Program
                 var userChat = new InputUser(long.Parse(update.CallbackQuery.Data), 0); 
             
                 await client.AddChatUser(chat, userChat);
+
+                await botClient.SendMessage(userChat.UserId, "Вы были одобрены модерацией");
                 
                 return;       
             }
         }
 
-        if (!string.IsNullOrEmpty(update.Message.Text) && update.Message.Chat.Type != ChatType.Supergroup)
+        if (!string.IsNullOrEmpty(update?.Message?.Text) && update.Message.Chat.Type != ChatType.Supergroup)
         {
             var chatId = update.Message.Chat.Id;
             var messageText = update.Message.Text;
@@ -229,7 +231,7 @@ class Program
     
             await _databaseService.SaveSurveyAsync(surveyModel);
     
-            await _modService.SendToModeratorAsync(surveyModel.UserId, 1784802785);
+            await _modService.SendToModeratorAsync(surveyModel.UserId, 1784802785, message.Chat.Username);
         }
     }
     

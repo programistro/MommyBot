@@ -14,7 +14,7 @@ public class ModerationService
         _bot = bot;
     }
 
-    public async Task SendToModeratorAsync(long userId, long moderatorId)
+    public async Task SendToModeratorAsync(long userId, long moderatorId, string username)
     {
         var user = await _databaseService.GetUserAsync(userId);
         var survey = await _databaseService.GetSurveyAsync(userId);
@@ -28,11 +28,12 @@ public class ModerationService
         });
 
         await _bot.SendTextMessageAsync(
-            chatId: -1002281538445,
+            chatId: -1002414377806,
             text: $"Новая анкета для модерации:\n" +
                   $"Имя: {survey.Name}\n" +
                   $"Возраст: {survey.Age}\n" +
-                  $"Город: {survey.City}",
+                  $"Город: {survey.City}"+
+                  $"Username: {username}",  
             replyMarkup: keyboard);
     }
 
