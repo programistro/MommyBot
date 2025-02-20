@@ -76,7 +76,6 @@ class Program
     
     private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
     {
-        
         if (update.CallbackQuery != null)
         {
             if (update.CallbackQuery.Data != null)
@@ -86,7 +85,7 @@ class Program
                 Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
             
                 var chats = await client.Messages_GetAllChats();
-                var chat = chats.chats[2420062922]; 
+                var chat = chats.chats[2297307731]; 
             
                 var userChat = new InputUser(long.Parse(update.CallbackQuery.Data), 0); 
             
@@ -96,7 +95,7 @@ class Program
             }
         }
 
-        if (!string.IsNullOrEmpty(update.Message.Text))
+        if (!string.IsNullOrEmpty(update.Message.Text) && update.Message.Chat.Type != ChatType.Supergroup)
         {
             var chatId = update.Message.Chat.Id;
             var messageText = update.Message.Text;
@@ -105,7 +104,7 @@ class Program
             {
                 await botClient.SendTextMessageAsync(
                     chatId: chatId,
-                    text: "Здравствуйте! Давайте заполним анкету.\nПожалуйста, введите ваше имя:",
+                    text: "Привет , я Mommy bot , для вступления в чат и нашего знакомства прошу ответить на несколько вопросов. Начнем с имени:",
                     cancellationToken: cancellationToken);
     
                 if (_surveyStates.ContainsKey(chatId))
@@ -213,6 +212,9 @@ class Program
                 chatId: message.Chat.Id,
                 text: surveyResult,
                 cancellationToken: default);
+
+            await botClient.SendMessage(message.Chat.Id,
+                "Отлично! Скоро вашу заявку одобрят!\nПока что можете ознакомиться с правилами чата.\n\n1. Перед началом общения рекомендуется ознакомиться с правилами, представленными на этой странице.\n2. При нарушении правил чата администрация имеет право выдать участнику предупреждение или исключить из чата без возможности разблокировки.\n3. Мы уважаем всех участников чата и просим вас также относиться друг к другу.\n4. Правила чата не оспариваются и не обсуждаются.\n\nРазрешается:\n1. Общаться по теме чата.\n2. Помогать участникам чата в ответах на вопросы, рекомендовать проверенную услугу/товар/специалиста.\n3. Приглашать своих подруг в чат ( ссылка для приглашения https://t.me/+Nm5OtxCcAfk3MGNi )\n\nЗапрещается:\n1. Присылать ссылки на сторонние чаты.\n2. Обсуждать темы религии, политики, советовать медицинские препараты.\n3. Материться, оскорблять и дискриминировать других участников чата.\n4. Присылать спам и любые файлы, нарушать авторские права третьих лиц.\n5. Рекламировать свои услуги и продавать товары без согласия администраторов чата.");
     
             _surveyStates.Remove(message.Chat.Id);
             

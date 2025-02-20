@@ -28,7 +28,7 @@ public class ModerationService
         });
 
         await _bot.SendTextMessageAsync(
-            chatId: moderatorId,
+            chatId: -1002281538445,
             text: $"Новая анкета для модерации:\n" +
                   $"Имя: {survey.Name}\n" +
                   $"Возраст: {survey.Age}\n" +
