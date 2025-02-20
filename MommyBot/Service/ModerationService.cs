@@ -24,7 +24,8 @@ public class ModerationService
 
         var keyboard = new InlineKeyboardMarkup(new[]
         {
-            InlineKeyboardButton.WithCallbackData("Одобрить", $"{userId}")
+            InlineKeyboardButton.WithCallbackData("Одобрить", $"{userId}"),
+            InlineKeyboardButton.WithCallbackData("Отказать", $"no-{userId}")
         });
 
         await _bot.SendTextMessageAsync(
@@ -32,7 +33,7 @@ public class ModerationService
             text: $"Новая анкета для модерации:\n" +
                   $"Имя: {survey.Name}\n" +
                   $"Возраст: {survey.Age}\n" +
-                  $"Город: {survey.City}"+
+                  $"Город: {survey.City}\n"+
                   $"Username: {username}",  
             replyMarkup: keyboard);
     }
