@@ -83,7 +83,9 @@ class Program
                 if (update.CallbackQuery.Data.StartsWith("-no-"))
                 {
                     await botClient.SendMessage(long.Parse(update.CallbackQuery.Data.Replace("no-", "")), "Отказан доступ");
-                
+
+                    await botClient.SendMessage(update.Message.Chat.Id, "Отказано \u274c");
+                    
                     return;
                 }
                 
@@ -99,6 +101,8 @@ class Program
                 await client.AddChatUser(chat, userChat);
 
                 await botClient.SendMessage(userChat.UserId, "Вы были одобрены модерацией");
+
+                await botClient.SendMessage(update.Message.Chat.Id, "Принят \u2705");
                 
                 return;       
             }
