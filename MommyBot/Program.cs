@@ -76,81 +76,79 @@ class Program
     
     private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
     {
-        if (update.Type != UpdateType.Message)
-            return;
-    
-        if (update.Message!.Type != MessageType.Text)
-            return;
-    
-        var chatId = update.Message.Chat.Id;
-        var messageText = update.Message.Text;
         
-        if (messageText == "Одобрить")
+        if (update.CallbackQuery != null)
         {
-            await using var client = new WTelegram.Client(Config);
-            var user = await client.LoginUserIfNeeded();
-            Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
+            if (update.CallbackQuery.Data != null)
+            {
+                await using var client = new WTelegram.Client(Config);
+                var user = await client.LoginUserIfNeeded();
+                Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
             
-            var inputPeer = new InputChannel(2420062922, 0);
+                var chats = await client.Messages_GetAllChats();
+                var chat = chats.chats[2420062922]; 
             
-            var chats = await client.Messages_GetAllChats();
-            var chat = chats.chats[2420062922]; 
+                var userChat = new InputUser(long.Parse(update.CallbackQuery.Data), 0); 
             
-            var userChat = new InputUser(6986786921, 0); 
-            
-            await client.AddChatUser(chat, userChat);
-            
-            return;
+                await client.AddChatUser(chat, userChat);
+                
+                return;       
+            }
         }
-        
-        // Проверяем команду /start
-        if (messageText == "/start")
+
+        if (!string.IsNullOrEmpty(update.Message.Text))
         {
-            await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Здравствуйте! Давайте заполним анкету.\nПожалуйста, введите ваше имя:",
-                cancellationToken: cancellationToken);
+            var chatId = update.Message.Chat.Id;
+            var messageText = update.Message.Text;
+            
+            if (messageText == "/start")
+            {
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "Здравствуйте! Давайте заполним анкету.\nПожалуйста, введите ваше имя:",
+                    cancellationToken: cancellationToken);
     
-            if (_surveyStates.ContainsKey(chatId))
+                if (_surveyStates.ContainsKey(chatId))
+                {
+                    _surveyStates[chatId] = new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName };
+                }
+                else
+                {
+                    _surveyStates.Add(chatId, new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName });
+                }
+    
+                return;
+            }
+    
+            // Если нет активного опроса, начинаем новый
+            if (!_surveyStates.ContainsKey(chatId))
             {
                 _surveyStates[chatId] = new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName };
+        
+                await botClient.SendTextMessageAsync(
+                    chatId: chatId,
+                    text: "Давайте заполним анкету! Пожалуйста, введите ваше имя:",
+                    cancellationToken: cancellationToken);
+        
+                return;
             }
-            else
+    
+            var currentState = _surveyStates[chatId];
+    
+            switch (currentState.CurrentStep)
             {
-                _surveyStates.Add(chatId, new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName });
+                case SurveyState.SurveyStep.WaitingForName:
+                    await HandleNameInput(botClient, update.Message, currentState);
+                    break;
+            
+                case SurveyState.SurveyStep.WaitingForAge:
+                    await HandleAgeInput(botClient, update.Message, currentState);
+                    break;
+            
+                case SurveyState.SurveyStep.WaitingForCity:
+                    await HandleCityInput(botClient, update.Message, currentState);
+                    break;
             }
-    
-            return;
-        }
-    
-        // Если нет активного опроса, начинаем новый
-        if (!_surveyStates.ContainsKey(chatId))
-        {
-            _surveyStates[chatId] = new SurveyState { CurrentStep = SurveyState.SurveyStep.WaitingForName };
-        
-            await botClient.SendTextMessageAsync(
-                chatId: chatId,
-                text: "Давайте заполним анкету! Пожалуйста, введите ваше имя:",
-                cancellationToken: cancellationToken);
-        
-            return;
-        }
-    
-        var currentState = _surveyStates[chatId];
-    
-        switch (currentState.CurrentStep)
-        {
-            case SurveyState.SurveyStep.WaitingForName:
-                await HandleNameInput(botClient, update.Message, currentState);
-                break;
-            
-            case SurveyState.SurveyStep.WaitingForAge:
-                await HandleAgeInput(botClient, update.Message, currentState);
-                break;
-            
-            case SurveyState.SurveyStep.WaitingForCity:
-                await HandleCityInput(botClient, update.Message, currentState);
-                break;
         }
     }
     

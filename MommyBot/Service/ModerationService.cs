@@ -24,7 +24,7 @@ public class ModerationService
 
         var keyboard = new InlineKeyboardMarkup(new[]
         {
-            InlineKeyboardButton.WithCallbackData("Одобрить", $"approve_{userId}")
+            InlineKeyboardButton.WithCallbackData("Одобрить", $"{userId}")
         });
 
         await _bot.SendTextMessageAsync(
