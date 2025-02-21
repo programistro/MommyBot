@@ -24,7 +24,7 @@ public class ModerationService
 
         var keyboard = new InlineKeyboardMarkup(new[]
         {
-            InlineKeyboardButton.WithCallbackData("Одобрить", $"{userId}"),
+            InlineKeyboardButton.WithCallbackData("Одобрить", $"{userId}, {username}"),
             InlineKeyboardButton.WithCallbackData("Отказать", $"no-{userId}"),
         });
 

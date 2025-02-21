@@ -76,36 +76,47 @@ class Program
     
     private static async Task HandleUpdateAsync(ITelegramBotClient botClient, Telegram.Bot.Types.Update update, CancellationToken cancellationToken)
     {
-        if (update.CallbackQuery != null)
+        if (update.CallbackQuery != null && update.CallbackQuery.Data != null)
         {
-            if (update.CallbackQuery.Data != null)
+            var userId = update.CallbackQuery.Data.Split(',')[0];
+            var uesrName = update.CallbackQuery.Data.Split(',')[1].Trim();
+            
+            if (userId.StartsWith("-no-"))
             {
-                if (update.CallbackQuery.Data.StartsWith("-no-"))
-                {
-                    await botClient.SendMessage(long.Parse(update.CallbackQuery.Data.Remove(0, 3)), "Отказан доступ");
+                await botClient.SendMessage(long.Parse(userId.Remove(0, 3)), "Отказан доступ");
 
-                    await botClient.SendMessage(-1002414377806, "Отказано \u274c");
+                await botClient.SendMessage(-1002414377806, "Отказано \u274c");
                     
-                    return;
-                }
+                return;
+            }
                 
-                await using var client = new WTelegram.Client(Config);
-                var user = await client.LoginUserIfNeeded();
-                Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
+            await using var client = new WTelegram.Client(Config);
+            var user = await client.LoginUserIfNeeded();
+            Console.WriteLine($"We are logged-in as {user.username ?? user.first_name + " " + user.last_name} (id {user.id})");
             
-                var chats = await client.Messages_GetAllChats();
-                var chat = chats.chats[2297307731]; 
+            var chats = await client.Messages_GetAllChats();
+            var chat = chats.chats[2297307731]; 
+                
+            var userUs = await client.Contacts_ResolveUsername(uesrName);
             
-                var userChat = new InputUser(long.Parse(update.CallbackQuery.Data), 0); 
+            var userChat = new InputUser(long.Parse(userId), userUs.User.access_hash); 
             
+            try
+            {
                 await client.AddChatUser(chat, userChat);
 
-                await botClient.SendMessage(userChat.UserId, "Вы были одобрены модерацией");
+                await botClient.SendMessage(long.Parse(userId), "Вы были одобрены модерацией",
+                    cancellationToken: cancellationToken);
 
-                await botClient.SendMessage(-1002414377806, "Принят \u2705");
-                
-                return;       
+                await botClient.SendMessage(-1002414377806, "Принят \u2705", cancellationToken: cancellationToken);
             }
+            catch (Exception e)
+            {    
+                Console.WriteLine(e);
+                throw;
+            }
+                
+            return;
         }
 
         if (!string.IsNullOrEmpty(update?.Message?.Text) && update.Message.Chat.Type != ChatType.Supergroup)
