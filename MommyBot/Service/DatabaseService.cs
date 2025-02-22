@@ -19,6 +19,17 @@ public class DatabaseService
         var user = await _context.Users
             .FirstOrDefaultAsync(u => u.TelegramId == survey.UserId);
 
+        if (user != null)
+        {
+            var surveyFind = await _context.Surveys.FirstOrDefaultAsync(x => x.UserId == user.TelegramId);
+            
+            surveyFind.Age = survey.Age;
+            surveyFind.Name = survey.Name;
+            surveyFind.City = survey.City;
+            
+            _context.Surveys.Update(surveyFind);
+            await _context.SaveChangesAsync();
+        }
         if (user == null)
         {
             user = new User
@@ -30,19 +41,19 @@ public class DatabaseService
                 GroupId = "wd"
             };
             _context.Users.Add(user);
+            
+            var surveyEntity = new Survey
+            {
+                Id = Guid.NewGuid(),
+                Name = survey.Name,
+                Age = survey.Age,
+                City = survey.City,
+                UserId = user.TelegramId,
+            };
+
+            _context.Surveys.Add(surveyEntity);
+            await _context.SaveChangesAsync();
         }
-
-        var surveyEntity = new Survey
-        {
-            Id = Guid.NewGuid(),
-            Name = survey.Name,
-            Age = survey.Age,
-            City = survey.City,
-            UserId = user.TelegramId,
-        };
-
-        _context.Surveys.Add(surveyEntity);
-        await _context.SaveChangesAsync();
     }
 
     public async Task SendToModerationAsync(Survey survey)

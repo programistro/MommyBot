@@ -108,13 +108,13 @@ class Program
                 
             var userUs = await client.Contacts_ResolveUsername(uesrName);
             
-            var userChat = new InputUser(long.Parse(userId.Remove(0, 3)), userUs.User.access_hash); 
+            var userChat = new InputUser(long.Parse(userId), userUs.User.access_hash); 
             
             try
             {
                 await client.AddChatUser(chat, userChat);
 
-                await botClient.SendMessage(long.Parse(userId.Remove(0, 3)), "Вы были одобрены модерацией",
+                await botClient.SendMessage(long.Parse(userId), "Вы были одобрены модерацией",
                     cancellationToken: cancellationToken);
 
                 await botClient.SendMessage(-1002414377806, "Принят \u2705", cancellationToken: cancellationToken);
