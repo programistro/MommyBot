@@ -81,7 +81,7 @@ class Program
             var userId = update.CallbackQuery.Data.Split(',')[0];
             var uesrName = update.CallbackQuery.Data.Split(',')[1].Trim();
             
-            if (update.CallbackQuery.Data.StartsWith("-no-"))
+            if (update.CallbackQuery.Data.StartsWith("no-"))
             {
                 await botClient.SendMessage(long.Parse(userId.Remove(0, 3)), "Отказан доступ");
 
