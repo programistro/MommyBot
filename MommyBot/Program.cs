@@ -87,6 +87,9 @@ class Program
 
                 await botClient.SendMessage(-1002414377806, "Отказано \u274c");
                     
+                await bot.DeleteMessage(chatId: update.CallbackQuery.Message.Chat.Id, messageId: update.CallbackQuery.Message.Id,
+                    cancellationToken: cancellationToken);
+                
                 return;
             }
                 
@@ -109,6 +112,9 @@ class Program
                     cancellationToken: cancellationToken);
 
                 await botClient.SendMessage(-1002414377806, "Принят \u2705", cancellationToken: cancellationToken);
+
+                await bot.DeleteMessage(chatId: update.CallbackQuery.Message.Chat.Id, messageId: update.CallbackQuery.Message.Id,
+                    cancellationToken: cancellationToken);
             }
             catch (Exception e)
             {    
