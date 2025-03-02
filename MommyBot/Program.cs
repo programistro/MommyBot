@@ -290,7 +290,7 @@ class Program
         {
             case "api_id": return "25421922";
             case "api_hash": return "8ed9b2cb68b4b22166105e81ddafb969";
-            case "phone_number": return "+79204489841";
+            case "phone_number": return "+79017136465";
             case "verification_code": Console.Write("Code: "); return Console.ReadLine();
             default: return null;                  // let WTelegramClient decide the default config
         }
